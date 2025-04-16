@@ -1,6 +1,7 @@
 package server
 
 import (
+  "net/http"
   "github.com/gin-gonic/gin"
 
   "test3/config"
@@ -11,6 +12,10 @@ func Init() {
   config.Init("config/config.yaml")
 
   router := gin.Default()
+
+  router.GET("/", func (ctx *gin.Context) {
+    ctx.JSON(http.StatusOK, gin.H{"info": "Teammate API"})
+  })
 
   player := new(controllers.PlayerController)
   player_group := router.Group("players")
