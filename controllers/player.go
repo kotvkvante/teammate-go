@@ -1,6 +1,7 @@
 package controllers
 
 import (
+  "fmt"
   "encoding/json"
   "database/sql"
 
@@ -19,7 +20,8 @@ func (p PlayerController) Get(ctx *gin.Context) {
   rows, err := db.Db.Query("SELECT id, pid, nick, hp, arm, team_id FROM player")
 
   if err != nil {
-    // err
+    fmt.Println("> ", err)
+    return
   }
   defer rows.Close()
 
@@ -30,7 +32,8 @@ func (p PlayerController) Get(ctx *gin.Context) {
       &player.HP, &player.Arm, &player.Team_ID,
     )
     if err != nil {
-      // err
+      fmt.Println("> ", err)
+      return
     }
     players = append(players, player)
   }
