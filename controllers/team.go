@@ -3,6 +3,7 @@ package controllers
 import (
   // "encoding/json"
   // "database/sql"
+  "log"
 
   "net/http"
   "github.com/gin-gonic/gin"
@@ -19,7 +20,9 @@ func (t TeamController) Get(ctx *gin.Context) {
   rows, err := db.Db.Query("SELECT id, name FROM team")
 
   if err != nil {
-    // err
+    log.Println(err)
+    ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
+    return
   }
   defer rows.Close()
 
@@ -27,7 +30,9 @@ func (t TeamController) Get(ctx *gin.Context) {
     var team models.Team
     err := rows.Scan(&team.ID, &team.Name)
     if err != nil {
-      // err
+      log.Println(err)
+      ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
+      return
     }
     teams = append(teams, team)
   }
@@ -43,7 +48,9 @@ func (t TeamController) GetPlayers(ctx *gin.Context) {
   rows, err := db.Db.Query("SELECT nick FROM player WHERE team_id = $1", team_id)
 
   if err != nil {
-    // err
+    log.Println(err)
+    ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
+    return
   }
   defer rows.Close()
 
@@ -51,7 +58,9 @@ func (t TeamController) GetPlayers(ctx *gin.Context) {
     var nick string
     err := rows.Scan(&nick)
     if err != nil {
-      // err
+      log.Println(err)
+      ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
+      return
     }
     nicks = append(nicks, nick)
   }

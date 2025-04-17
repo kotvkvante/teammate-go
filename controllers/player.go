@@ -1,7 +1,7 @@
 package controllers
 
 import (
-  "fmt"
+  "log"
   "encoding/json"
   "database/sql"
 
@@ -20,7 +20,8 @@ func (p PlayerController) Get(ctx *gin.Context) {
   rows, err := db.Db.Query("SELECT id, pid, nick, hp, arm, team_id FROM player")
 
   if err != nil {
-    fmt.Println("> ", err)
+    log.Println(err)
+    ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
     return
   }
   defer rows.Close()
@@ -32,7 +33,8 @@ func (p PlayerController) Get(ctx *gin.Context) {
       &player.HP, &player.Arm, &player.Team_ID,
     )
     if err != nil {
-      fmt.Println("> ", err)
+      log.Println(err)
+      ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
       return
     }
     players = append(players, player)
@@ -43,7 +45,9 @@ func (p PlayerController) Get(ctx *gin.Context) {
 
 func (p PlayerController) GetByNick(ctx *gin.Context) {
   var player models.Player
-  nick := ctx.Param("nick")
+  var nick string
+
+  nick = ctx.Param("nick")
 
   row := db.Db.QueryRow("SELECT id, pid, nick, hp, arm, team_id FROM player WHERE nick = $1", nick)
   err := row.Scan(
@@ -56,8 +60,9 @@ func (p PlayerController) GetByNick(ctx *gin.Context) {
       ctx.JSON(http.StatusNotFound, gin.H{"message": "player not found"})
       return
     }
-    // err
-    ctx.JSON(http.StatusNotFound, gin.H{"message": "?"})
+
+    log.Println(err)
+    ctx.JSON(http.StatusInternalServerError, gin.H{"message": "?"})
     return
   }
 
@@ -79,8 +84,10 @@ func (p PlayerController) Add(ctx *gin.Context) {
   )
 
   if err != nil {
-    // fmt.Println(err)
-    ctx.AbortWithStatusJSON(400, "Couldn't create the new player.")
+    log.Println(err)
+    /// ctx.AbortWithStatusJSON(400, "Couldn't create the new player.")
+    ctx.JSON(http.StatusInternalServerError, gin.H{"message": "?"})
+    return
   }
 
   ctx.JSON(http.StatusOK, "models.Player is successfully created.")

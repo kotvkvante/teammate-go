@@ -1,6 +1,7 @@
 package server
 
 import (
+  "log"
   "net/http"
   "github.com/gin-gonic/gin"
 
@@ -15,6 +16,11 @@ func Init() {
 
   router.GET("/", func (ctx *gin.Context) {
     ctx.JSON(http.StatusOK, gin.H{"info": "Teammate API"})
+  })
+
+  router.GET("/error", func (ctx *gin.Context) {
+    log.Println("err")
+    ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
   })
 
   player := new(controllers.PlayerController)
