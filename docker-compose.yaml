@@ -1,13 +1,12 @@
 services:
   teammate-go:
     container_name: teammate-go
-    # image: kotvkvante/teammage-go
     build:
       context: .
-      dockerfile: docker/db/Dockerfile
-
-    # environment:
-      # DATABASE_URL: "host=go_db user=postgres password=postgres dbname=postgres sslmode=disable"
+      dockerfile: docker/teammate-go/Dockerfile
+    environment:
+      HOST: db
+      PORT: 5433
     ports:
       - "8085:8085"
     depends_on:
@@ -17,14 +16,14 @@ services:
       context: .
       dockerfile: docker/db/Dockerfile
 
-    container_name: db
-    # image: postgres:17
+    container_name: teammate-db
+
     environment:
       POSTGRES_PASSWORD: 111
       POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-    # ports:
-    #   - "5432:5432"
+      POSTGRES_DB: db_teammate
+    ports:
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 

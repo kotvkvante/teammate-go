@@ -3,9 +3,7 @@ package main
 import (
   "os"
   "io"
-  // "fmt"
-  // "encoding/json"
-  // "database/sql"
+  "log"
 
   "github.com/gin-gonic/gin"
 
@@ -19,6 +17,14 @@ func SetupLogOutput() {
 }
 
 func main() {
+  f, err := os.OpenFile("log.txt", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+  if err != nil {
+      log.Fatalf("error opening file: %v", err)
+  }
+  defer f.Close()
+
+  log.SetOutput(f)
+
   SetupLogOutput()
   db.ConnectDatabase()
   server.Init()
