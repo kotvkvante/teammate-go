@@ -26,16 +26,21 @@ func (p PlayerController) Get(ctx *gin.Context) {
   }
   defer rows.Close()
 
+  var team_id sql.NullInt32
   for rows.Next() {
     var player models.Player
     err := rows.Scan(
       &player.ID, &player.PID, &player.Nick,
-      &player.HP, &player.Arm, &player.Team_ID,
+      &player.HP, &player.Arm, &team_id,
     )
     if err != nil {
       log.Println(err)
       ctx.JSON(http.StatusInternalServerError, gin.H{"message": "error"})
       return
+    }
+
+    if team_id.Valid {
+      player.Team_ID = (int)(team_id.Int32)
     }
     players = append(players, player)
   }
