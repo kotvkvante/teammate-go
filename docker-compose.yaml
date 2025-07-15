@@ -1,6 +1,7 @@
 services:
   teammate-go:
     container_name: teammate-go
+    image: kotvkvante/teammate-go:${TAG}
     build:
       context: .
       dockerfile: docker/teammate-go/Dockerfile
@@ -17,6 +18,7 @@ services:
       dockerfile: docker/db/Dockerfile
 
     container_name: teammate-db
+    image: kotvkvante/teammate-go:${TAG}
 
     environment:
       POSTGRES_PASSWORD: 111
