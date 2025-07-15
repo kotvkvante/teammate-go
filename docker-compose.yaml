@@ -6,9 +6,9 @@ services:
       dockerfile: docker/teammate-go/Dockerfile
     environment:
       HOST: db
-      PORT: 5433
+      PORT: 5432
     ports:
-      - "8085:8085"
+      - "8090:8000"
     depends_on:
       - db
   db:
@@ -23,7 +23,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: db_teammate
     ports:
-      - "5433:5432"
+      - "5434:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
