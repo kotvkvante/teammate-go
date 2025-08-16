@@ -1,31 +1,29 @@
 services:
   teammate-go:
+    build:
+      context: ..
+      dockerfile: docker/teammate-go/Dockerfile
     container_name: teammate-go
     image: kotvkvante/teammate-go:${TAG}
-    build:
-      context: .
-      dockerfile: docker/teammate-go/Dockerfile
     environment:
       HOST: db
       PORT: 5432
     ports:
-      - "8090:8000"
+      - "8100:8000"
     depends_on:
       - db
   db:
     build:
-      context: .
+      context: ..
       dockerfile: docker/db/Dockerfile
-
     container_name: teammate-db
-    image: kotvkvante/teammate-go:${TAG}
-
+    image: kotvkvante/teammate-go-db:${TAG}
     environment:
       POSTGRES_PASSWORD: 111
       POSTGRES_USER: postgres
       POSTGRES_DB: db_teammate
     ports:
-      - "5434:5432"
+      - "5450:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
