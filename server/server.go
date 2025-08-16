@@ -26,7 +26,7 @@ func Init() {
   player := new(controllers.PlayerController)
   player_group := router.Group("players")
   player_group.GET("/", player.Get)
-  player_group.GET("/:nick", player.GetByNick)
+  player_group.GET("/nick/:nick", player.GetByNick)
   player_group.POST("/", player.Add)
 
   team := new(controllers.TeamController)
