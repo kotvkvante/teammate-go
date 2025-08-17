@@ -45,7 +45,7 @@ func (t TeamController) GetPlayers(ctx *gin.Context) {
 
   team_id := ctx.Param("team_id")
 
-  rows, err := db.Db.Query("SELECT nick FROM player WHERE team_id = $1", team_id)
+  rows, err := db.Db.Query("SELECT nick, hp FROM player WHERE team_id = $1", team_id)
 
   if err != nil {
     log.Println(err)
@@ -67,3 +67,5 @@ func (t TeamController) GetPlayers(ctx *gin.Context) {
 
   ctx.JSON(http.StatusOK, nicks)
 }
+
+func (t TeamController) GetPlayers()

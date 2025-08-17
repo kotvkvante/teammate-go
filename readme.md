@@ -2,12 +2,12 @@
 
 
 Установка:
-1. Создать файл .env
+1. Создать файл .env:
 ```
 USER=postgres
 DB_NAME=db_teammate
 PASSWORD=111
 ```
 
-2. Выполнить:
+2. Выполнить комманду:
 `docker compose up -d --build`
