@@ -67,5 +67,3 @@ func (t TeamController) GetPlayers(ctx *gin.Context) {
 
   ctx.JSON(http.StatusOK, nicks)
 }
-
-func (t TeamController) GetPlayers()
